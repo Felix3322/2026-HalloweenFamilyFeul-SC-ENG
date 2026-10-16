@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Family Fuel Halloween Night</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="ambient ambient-left"></div>
+  <div class="ambient ambient-right"></div>
+  <div class="fog fog-a"></div><div class="fog fog-b"></div>
+  <div class="ghost ghost-one" aria-hidden="true">◖◗</div>
+  <div class="ghost ghost-two" aria-hidden="true">◖◗</div>
+  <div class="bat bat-one" aria-hidden="true">▲▼</div>
+  <div class="bat bat-two" aria-hidden="true">▲▼</div>
+
+  <header class="topbar">
+    <div class="brand-lockup">
+      <div class="brand-mark"><span>F</span><span>F</span></div>
+      <div><h1>Family Fuel <em>Halloween Night</em></h1></div>
+    </div>
+    <div class="top-actions">
+      <button class="icon-btn" id="soundToggle" aria-label="Toggle sound"><span id="soundIcon">🔊</span></button>
+      <button class="icon-btn" id="motionToggle" aria-label="Toggle motion"><span>✦</span></button>
+      <button class="ghost-btn" id="fullscreenBtn">⛶ Fullscreen</button>
+      <button class="secondary-btn" id="teamSetupBtn">Team Setup</button><button class="secondary-btn self-run-toggle" id="selfRunToggle">Self-Run: Off</button><button class="primary-btn" id="viewToggle">Host Console</button>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section class="board-view" id="boardView">
+      <div class="event-overlay" id="eventOverlay" aria-live="polite"></div>
+      <div class="side-marquee side-marquee-left"><img src="assets/family-fuel-marquee.png" alt="Family Fuel marquee"></div>
+      <div class="side-marquee side-marquee-right"><img src="assets/family-fuel-marquee.png" alt="Family Fuel marquee"></div>
+      <div class="score-strip">
+        <div class="team-score team-blue"><span class="team-avatar" id="teamAAvatarBoard">🎃</span><div><span class="score-label" id="teamANameBoard">Blue Team</span><strong id="teamAScoreBoard">0</strong></div></div>
+        <div class="round-chip"><span class="round-label">ROUND <b id="roundNumberBoard">1</b></span><span class="round-status" id="roundStatusBoard">Ready</span></div>
+        <div class="team-score team-orange"><div><span class="score-label" id="teamBNameBoard">Orange Team</span><strong id="teamBScoreBoard">0</strong></div><span class="team-avatar" id="teamBAvatarBoard">👻</span></div>
+      </div>
+
+      <img class="board-host" src="assets/halloween-host-variant.png" alt="Halloween host" />
+      <section class="question-card stage-panel">
+        <div class="question-kicker"><span class="live-dot"></span> 100 PEOPLE ANSWERED</div>
+        <h2 id="questionBoard">Name something you might see at a Halloween party</h2>
+        <div class="question-underline"></div><div class="countdown-box hidden" id="countdownBox"><span>Buzz-in countdown</span><strong id="countdownValue">10</strong></div><div class="player-controls hidden" id="playerControls"><button class="secondary-btn" id="playerRevealBtn">Reveal Next</button><button class="danger-btn" id="playerStrikeBtn">Mark Wrong</button><button class="tool-btn" id="playerCountdownBtn">Start Buzz-in</button><button class="tool-btn" id="playerNextBtn">Next Round</button></div>
+      </section>
+
+      <section class="answer-stage stage-panel">
+        <div class="stage-glow"></div>
+        <div class="answer-grid" id="answerGrid"></div>
+        <div class="strike-row" id="strikeRow" aria-label="Strikes"><span class="strike-dot"></span><span class="strike-dot"></span><span class="strike-dot"></span></div>
+      </section>
+
+      <section class="board-footer">
+        <div class="active-team"><span class="pulse-ring"></span><div><span class="mini-label">Current team</span><strong id="activeTeamBoard">Blue Team</strong></div></div>
+        <div class="footer-hint">Reveal answers in Host Console <span>R</span> · Wrong <span>X</span> · Next round <span>N</span></div>
+        <div class="total-pot"><span class="mini-label">Round points</span><strong id="roundPointsBoard">0</strong></div>
+      </section>
+    </section>
+
+    <section class="host-view hidden" id="hostView">
+      <section class="host-stage stage-panel">
+        <div class="host-stage-copy"><span class="section-kicker">HALLOWEEN HOST</span><h3>Host is ready</h3><p>Lights, candy, and a little ghost magic turn every question into a stage moment.</p></div>
+        <img class="host-portrait" src="assets/halloween-host-variant.png" alt="Original Halloween game host artwork" />
+      </section>
+      <div class="host-heading"><div><span class="eyebrow">SHOW CALLER CONSOLE</span><h2>Host Console</h2></div><span class="save-status" id="saveStatus">● Saved locally</span></div>
+      <div class="host-grid">
+        <div class="host-main">
+          <section class="control-card stage-panel">
+            <div class="card-header"><div><span class="section-kicker">ROUND PROMPT</span><h3>Round prompt and status</h3></div><button class="small-btn" id="newQuestionBtn">↻ New question</button></div>
+            <label class="field-label" for="questionInput">Question text</label>
+            <textarea id="questionInput" rows="2" placeholder="Type the question…"></textarea>
+            <div class="field-row"><label class="field"><span class="field-label">Round</span><input id="roundInput" type="number" min="1" max="99" /></label><label class="field"><span class="field-label">Active team</span><select id="activeTeamInput"><option value="A">Blue Team</option><option value="B">Orange Team</option></select></label><label class="field"><span class="field-label">Status</span><select id="statusInput"><option>Ready</option><option>Buzz-in</option><option>Answering</option><option>Round over</option></select></label></div>
+          </section>
+
+          <section class="control-card stage-panel preset-card">
+            <div class="card-header"><div><span class="section-kicker">QUESTION PACKS</span><h3>Preset questions</h3></div></div>
+            <div class="preset-row"><select id="presetSelect" aria-label="Preset question pack"></select><button class="primary-btn" id="loadPresetBtn">Load preset</button></div>
+            <p class="tip">Load a ready-to-play school-safe question with answers and scores.</p>
+          </section>
+
+          <section class="control-card stage-panel">
+            <div class="card-header"><div><span class="section-kicker">ANSWER BOARD</span><h3>Answer board</h3></div><button class="small-btn" id="addAnswerBtn">＋ Add answer</button></div>
+            <div class="answer-editor" id="answerEditor"></div>
+            <div class="editor-actions"><button class="secondary-btn" id="revealNextBtn">◉ Reveal next <kbd>R</kbd></button><button class="danger-btn" id="strikeBtn">✕ Mark wrong <kbd>X</kbd></button></div>
+          </section>
+        </div>
+
+        <aside class="host-side">
+          <section class="control-card stage-panel score-editor-card"><div class="card-header"><div><span class="section-kicker">SCOREBOARD</span><h3>Scoreboard</h3></div></div>
+            <label class="field"><span class="field-label">Blue Team name</span><input id="teamANameInput" /></label><label class="field"><span class="field-label">Blue Team score</span><input id="teamAScoreInput" type="number" min="0" /></label>
+            <label class="field"><span class="field-label">Orange Team name</span><input id="teamBNameInput" /></label><label class="field"><span class="field-label">Orange Team score</span><input id="teamBScoreInput" type="number" min="0" /></label>
+            <div class="score-actions"><button class="primary-btn full" id="awardBtn">＋ Award round points</button><button class="secondary-btn full" id="switchTeamBtn">⇄ Switch team</button></div>
+          </section>
+          <section class="control-card stage-panel classroom-card">
+            <div class="card-header"><div><span class="section-kicker">CLASSROOM REWARDS</span><h3>One-teacher reward desk</h3></div></div>
+            <label class="field-label" for="rosterInput">Student list</label>
+            <textarea id="rosterInput" rows="4" placeholder="One student per line"></textarea>
+            <label class="field-label" for="rewardNameInput">Reward name</label>
+            <input id="rewardNameInput" value="Halloween Treat" placeholder="Example: Candy prize" />
+            <div class="tool-row"><button class="tool-btn" id="saveRosterBtn">Save class list</button><button class="tool-btn" id="markAllRewardsBtn">Mark all awarded</button></div>
+            <div class="reward-queue" id="rewardQueue" aria-live="polite"></div>
+            <button class="primary-btn full" id="quickNextBtn">Quick start next round</button>
+          </section>
+
+          <section class="control-card stage-panel utility-card"><div class="card-header"><div><span class="section-kicker">SHOW TOOLS</span><h3>Show controls</h3></div></div>
+            <div class="tool-row"><button class="tool-btn" id="resetStrikesBtn">Clear X</button><button class="tool-btn" id="hideAllBtn">Hide answers</button></div>
+            <div class="tool-row"><button class="tool-btn" id="nextRoundBtn">Next round <kbd>N</kbd></button><button class="tool-btn" id="countdownBtn">Start countdown</button></div><div class="tool-row"><button class="tool-btn" id="resetGameBtn">Reset game</button><button class="tool-btn" id="endRoundBtn">End round</button></div>
+            <div class="tool-row"><button class="tool-btn" id="exportBtn">Export save</button><button class="tool-btn" id="importBtn">Import save</button><input type="file" id="importFile" accept="application/json" hidden /></div>
+            <p class="tip">Shortcuts: R reveal · X wrong · N next round. Changes save in this browser.</p>
+          </section>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <section class="setup-overlay" id="setupOverlay" aria-label="Team setup">
+    <div class="setup-card stage-panel">
+      <div class="setup-kicker">BEFORE THE SHOW</div>
+      <h2>Choose your teams</h2>
+      <p class="setup-intro">Pick a name and a Halloween avatar for each team, then start the game.</p>
+      <div class="setup-grid">
+        <div class="team-setup team-setup-blue">
+          <span class="section-kicker">TEAM A</span>
+          <label class="field-label" for="setupTeamAName">Team name</label>
+          <input id="setupTeamAName" value="Blue Team" maxlength="24" />
+          <label class="field-label">Avatar</label>
+          <div class="avatar-picker" data-team="A"><button type="button" class="avatar-choice selected" data-avatar="🎃">🎃</button><button type="button" class="avatar-choice" data-avatar="🦇">🦇</button><button type="button" class="avatar-choice" data-avatar="🕸️">🕸️</button><button type="button" class="avatar-choice" data-avatar="🐺">🐺</button></div>
+        </div>
+        <div class="team-setup team-setup-orange">
+          <span class="section-kicker">TEAM B</span>
+          <label class="field-label" for="setupTeamBName">Team name</label>
+          <input id="setupTeamBName" value="Orange Team" maxlength="24" />
+          <label class="field-label">Avatar</label>
+          <div class="avatar-picker" data-team="B"><button type="button" class="avatar-choice selected" data-avatar="👻">👻</button><button type="button" class="avatar-choice" data-avatar="🧙">🧙</button><button type="button" class="avatar-choice" data-avatar="🕷️">🕷️</button><button type="button" class="avatar-choice" data-avatar="🧛">🧛</button></div>
+        </div>
+      </div>
+      <button class="primary-btn setup-start" id="startGameBtn">Start the game</button>
+    </div>
+  </section>
+
+  <div class="toast" id="toast" role="status"></div>
+  <footer class="app-footer"><span>BUILT FOR A SCHOOL HALLOWEEN GAME NIGHT</span><span class="footer-credit">© Offline event build · No network required <img class="school-crest" src="assets/school-crest.jpg" alt="School crest"></span></footer>
+  <script src="app.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

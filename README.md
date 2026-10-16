@@ -1,6 +1,8 @@
 # Family Fuel · Halloween Night
 
 A self-contained offline game board for a school Halloween event. It is designed for one teacher with one classroom screen: the teacher can run the host console, or students can keep playing in Self-Run Mode without a dedicated host.
+<img width="500" alt="image" src="https://github.com/user-attachments/assets/e4bbe7f9-5237-4ac3-aee2-b7f482c2178a" />
+<img width="500" alt="image" src="https://github.com/user-attachments/assets/a0ba82f1-ca2f-436d-b5c2-ba0effb583a8" />
 
 ## Run it
 
